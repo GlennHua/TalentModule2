@@ -21,14 +21,22 @@ export default class TalentFeed extends React.Component {
             feedData: [],
             watchlist: [],
             loaderData: loader,
-            haveTalents: false,
-            companyDetails: null
+            haveTalents: null,
+            companyDetails: null,
+
+            feed : {
+                Position : 1,
+                Number : 10
+            },
+
+            talents : []
         }
 
         this.init = this.init.bind(this);
         this.noTalentFound = this.noTalentFound.bind();
 
-        this.Testing = this.Testing.bind(this)
+        this.GetData = this.GetData.bind(this)
+        this.applyPageLimit = this.applyPageLimit.bind(this)
 
     };
 
@@ -41,6 +49,7 @@ export default class TalentFeed extends React.Component {
     componentDidMount() {
         //window.addEventListener('scroll', this.handleScroll);
         this.init()
+        this.GetData()
     };
 
 
@@ -56,19 +65,28 @@ export default class TalentFeed extends React.Component {
 
     }
 
- 
-    Testing()
-    {
-        const data = {
-            Position : 5,
-            Number : 5
-        }
 
+
+    applyPageLimit(feed)
+    {
+        //console.log(feed)
+
+        //const data = Object.assign({}, feed)
+        this.setState({
+            feed : feed
+        }, this.GetData)
+
+    }
+
+ 
+
+    GetData()
+    {
         var cookies = Cookies.get('talentAuthToken');
 
         $.ajax({
 
-            url: 'http://localhost:60290/profile/profile/GetTalentSnapshots',
+            url: 'http://module2api-profile.azurewebsites.net/profile/profile/GetTalentSnapshots',
             headers: {
                 'Authorization': 'Bearer ' + cookies,
                 'Content-Type': "application/json"
@@ -76,13 +94,16 @@ export default class TalentFeed extends React.Component {
             type: "GET",
             contentType: "application/json",
             dataType: "json",
-            data: data,
+            data: this.state.feed,
             success: function (res) {
 
-                //console.log(res.employer)
+                console.log(res)
 
-                res ? console.log(res) : console.log('Nothing returned')
+                res ? 
+                this.setState({talents : res.data})
+                : this.setState({haveTalents : false})
 
+                console.log(this.state.talents)
 
             }.bind(this),
             error: function(res)
@@ -90,11 +111,14 @@ export default class TalentFeed extends React.Component {
                 console.log(res)
             }
         })
-
     }
+
+
     
    
     render() {
+
+        const talents = this.state.talents
 
         return (
             <BodyWrapper reload={this.init} loaderData={this.state.loaderData}>
@@ -108,8 +132,12 @@ export default class TalentFeed extends React.Component {
                             <CompanyProfile />
                         </div>
                         
-                        <div id = 'talentInfo' style = {{height : 900, width : 500}}>
-                            {this.state.haveTalents == true ? this.noTalentFound() : <TalentCard />}
+                        <div id = 'talentInfo' style = {{height : 900, width : 500, overflow : "hidden", overflowY : scroll()}}>
+                            {this.state.haveTalents == false ? this.noTalentFound() : 
+                            <TalentCard 
+                                controlFunc = {this.applyPageLimit}
+                                talents = {talents}
+                            />}
                         </div>
 
                         <div id = 'suggestionFollow'>
@@ -117,11 +145,6 @@ export default class TalentFeed extends React.Component {
                         </div>
                     
                     </Grid>
-
-                    <Button 
-                        content = 'Testing'
-                        onClick = {this.Testing}
-                    />
                 
                 </div>
                 

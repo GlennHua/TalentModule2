@@ -3,6 +3,7 @@ import ReactPlayer from 'react-player';
 import PropTypes from 'prop-types'
 import { Popup, Icon, Card, Label, Button, Menu, Dropdown } from 'semantic-ui-react'
 import Cookies from 'js-cookie'
+import TalentCardDetail from './TalentCardDetail.jsx'
 
 export default class TalentCard extends React.Component {
     constructor(props) {
@@ -11,66 +12,35 @@ export default class TalentCard extends React.Component {
         this.state = {
 
             position : null,
-            increment : 50
+            increment : 10
 
         }
        
 
         this.forTesting = this.forTesting.bind(this)
-        this.GetData = this.GetData.bind(this)
-        //this.handleDropdownChange = this.handleDropdownChange.bind(this)
-        
-        this.GetData()
+       
+        this.handleDropdownChange = this.handleDropdownChange.bind(this)
     };
 
-    
-    GetData()
+
+
+    handleDropdownChange(event, {value})
     {
-        const data = {
-            Position : 1,
-            Number : 650
-        }
+        console.log(value+' Rows')
 
-        var cookies = Cookies.get('talentAuthToken');
-
-        $.ajax({
-
-            url: 'http://localhost:60290/profile/profile/GetTalentSnapshots',
-            headers: {
-                'Authorization': 'Bearer ' + cookies,
-                'Content-Type': "application/json"
-            },
-            type: "GET",
-            contentType: "application/json",
-            dataType: "json",
-            data: data,
-            success: function (res) {
-
-                //console.log(res.employer)
-
-                res ? console.log(res) : console.log('Nothing returned')
-
-
-            }.bind(this),
-            error: function(res)
-            {
-                console.log(res)
-            }
+        this.setState({
+            increment : value
         })
 
+        //this.GetData()
+        
+        const data = {
+            Position : 1,
+            Number : value
+        } 
+
+        this.props.controlFunc(data)
     }
-
-
-    // handleDropdownChange(event, {value})
-    // {
-    //     console.log(value+' Rows')
-
-    //     this.setState({
-    //         increment : value
-    //     })
-
-    //     this.GetData()
-    // }
 
 
     forTesting()
@@ -80,88 +50,124 @@ export default class TalentCard extends React.Component {
 
     render() { 
 
-        // const perPage = [
+        const perPage = [
 
-        //     {
-        //         key : 10,
-        //         text : 10,
-        //         value : 10
-        //     },
+            {
+                key : 10,
+                text :'10 Talents',
+                value : 10
+            },
 
-        //     {
-        //         key : 20,
-        //         text : 20,
-        //         value : 20
-        //     },
+            {
+                key : 20,
+                text : '20 Talents',
+                value : 20
+            },
 
-        //     {
-        //         key : 30,
-        //         text : 30,
-        //         value : 30
-        //     }
-        // ]
+            {
+                key : 30,
+                text : '30 Talents',
+                value : 30
+            },
 
+            {
+                key : 800,
+                text : 'All Talents',
+                value : 800
+            },
+        ]
+
+        const talentList = this.props.talents
+        //console.log(talentList.length)
+        
 
         return(
             <div>
-            {/* <b>Talents per page: </b>
+            <b>Current displaying talents:  </b>
             <Dropdown
                 selection
                 options={perPage}
                 placeholder = 'Please select'
                 value = {this.state.increment}
                 onChange = {this.handleDropdownChange}
-            /> */}
+            />
 
-            <Card fluid>
-                <Card.Content>
+            {talentList.map(
+                (talent, key)=>{
 
-                    <Card.Header>
+                    return(
+                        <Card fluid key={key}>
+                            <Card.Content>
 
-                        <h4 align = 'left'>Testing</h4><Label corner = 'right'><Icon name = 'star' /></Label>
-                        
-                    </Card.Header>
+                                <Card.Header>
 
-                    <Card.Description>
+                                    <h4 align = 'left'>{talent.name}</h4><Label corner = 'right'><Icon name = 'star' /></Label>
+                                    
+                                </Card.Header>
 
-                        <video width='100%' height='100%' controls/>
+                                {/* <Card.Description>
 
-                        {/* <Button.Group>
-                            <Button><Icon name = 'user'/></Button>
-                            <Button><Icon name = 'user'/></Button>
-                            <Button><Icon name = 'user'/></Button>
-                        </Button.Group> */}
-                        <Menu secondary widths = {4}>
-                            <Menu.Item 
-                                icon = 'user'
-                                onClick = {this.forTesting}
-                            />
-                            <Menu.Item 
-                                icon = 'file pdf'
-                                onClick = {this.forTesting}
-                            />
-                            <Menu.Item 
-                                icon = 'linkedin'
-                                onClick = {this.forTesting}
-                            />
-                            <Menu.Item 
-                                icon = 'github'
-                                onClick = {this.forTesting}
-                            />
-                        </Menu>
+                                    <video width='100%' height='100%' controls/>
 
-                    </Card.Description>
+                                    <Menu secondary widths = {4}>
+                                        <Menu.Item 
+                                            icon = 'user'
+                                            onClick = {this.forTesting}
+                                        />
+                                        <Menu.Item 
+                                            icon = 'file pdf'
+                                            onClick = {this.forTesting}
+                                        />
+                                        <Menu.Item 
+                                            icon = 'linkedin'
+                                            onClick = {this.forTesting}
+                                        />
+                                        <Menu.Item 
+                                            icon = 'github'
+                                            onClick = {this.forTesting}
+                                        />
+                                    </Menu>
 
-                    
+                                </Card.Description> */}
+                                <TalentCardDetail 
+                                    visa = {talent.visa}
+                                />
 
-                </Card.Content>
+                                
 
-                <Card.Content extra>
-                    <Label basic>C#</Label>
-                    <Label basic>Linq</Label>
-                </Card.Content>
+                            </Card.Content>
 
-            </Card>
+                            <Card.Content extra>
+
+                                {talent.skills.length ==0 ? <Label basic>For Demo--In Case no Skills</Label>
+                                
+                                :
+                            
+                                talent.skills.map(
+                                    (skill, key)=>{
+                                        return(
+                                        <Label basic key={key}>{skill}</Label>
+                                        )
+                                    }
+                                )
+                                }
+
+                                {/* <Label basic>For Demo--In Case no Skills</Label>
+                                {talent.skills.map(
+                                    (skill, key)=>{
+                                        return(
+                                        <Label basic key={key}>{skill}</Label>
+                                        )
+                                    }
+                                )} */}
+
+                            </Card.Content>
+
+                        </Card>
+                    )
+                }
+            )}
+  
             </div>
         )
        

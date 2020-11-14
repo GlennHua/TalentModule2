@@ -26,7 +26,7 @@ export default class CompanyProfile extends React.Component {
 
         $.ajax({
 
-            url: 'http://localhost:60290/profile/profile/getEmployerProfile',
+            url: 'http://module2api-profile.azurewebsites.net/profile/profile/getEmployerProfile',
             headers: {
                 'Authorization': 'Bearer ' + cookies,
                 'Content-Type': "application/json"
@@ -38,7 +38,7 @@ export default class CompanyProfile extends React.Component {
 
                 //console.log(res.employer)
 
-                res ? console.log(res.employer) : console.log('Nothing returned')
+                //res ? console.log(res.employer) : console.log('Nothing returned')
 
                 this.setState({
                     companyInfo : res.employer
@@ -62,9 +62,9 @@ export default class CompanyProfile extends React.Component {
     render() {   
 
         const companyInfo = Object.assign({}, this.state.companyInfo.companyContact)
-        console.log(companyInfo)
+        //console.log(companyInfo)
         const location = Object.assign({}, companyInfo.location)
-        console.log(location)
+        //console.log(location)
         
         return(
 
