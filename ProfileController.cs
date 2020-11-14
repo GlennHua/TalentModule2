@@ -597,11 +597,6 @@ namespace Talent.Services.Profile.Controllers
             throw new NotImplementedException();
         }
 
-
-
-
-
-
         [HttpGet("getEducation")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
         public async Task<IActionResult> GetEducation()
@@ -633,8 +628,6 @@ namespace Talent.Services.Profile.Controllers
             //Your code here;
             throw new NotImplementedException();
         }
-
-
 
      
         #endregion

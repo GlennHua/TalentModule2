@@ -739,43 +739,19 @@ namespace Talent.Services.Profile.Domain.Services
 
 
 
-        //User Education----------------------------------------------------------------------------------------------------------------
-        //public async Task<List<EducationPersonListViewModel>> GetTalentEducation(string userId)
+        //public async Task<List<User>> GetTalentList()
         //{
 
         //    try
         //    {
-
-        //        var profile = await _userRepository.GetByIdAsync(userId);
-
-        //        if (profile != null)
-        //        {
-
-        //            var educationList = new List<EducationPersonListViewModel>();
-
-        //            var list = profile.Education;
-
-        //            foreach (UserEducation edu in list)
-        //            {
-
-        //                var newEdu = new EducationPersonListViewModel();
-                        
-
-        //            }
-
-        //        }
         //        return null;
-
         //    }
         //    catch (MongoException)
         //    {
-
         //        return null;
-
         //    }
-
+        
         //}
-
 
 
 
@@ -825,17 +801,21 @@ namespace Talent.Services.Profile.Domain.Services
                 if (employerId != null)
                 {
                   
-                        var list = _userRepository.GetQueryable().Skip(increment*(position-1)).Take(increment);
+                        var list = _userRepository.Collection.Skip(increment*(position-1)).Take(increment);
           
                         var result = new List<TalentSnapshotViewModel>();
 
                         foreach (var user in list)
                         {
+                            
 
                             var newUser = new TalentSnapshotViewModel();
-                            newUser.Id = user.Id;
-                            newUser.Name = user.LastName;
-                            newUser.Summary = user.Summary;
+                            //newUser.CurrentEmployment = user.Experience.Last();
+                            //newUser.Level = user.Experience.Select(x=> x.Position).LastOrDefault().ToString();
+
+                            newUser.Name = user.FirstName+" "+user.LastName;
+                            newUser.Visa = user.VisaStatus;
+                            newUser.Skills = user.Skills.Select(x => x.Skill).ToList();
 
                             result.Add(newUser);
 
@@ -850,8 +830,6 @@ namespace Talent.Services.Profile.Domain.Services
 
             //throw new NotImplementedException();
         }
-
-
 
 
 
