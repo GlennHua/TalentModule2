@@ -810,12 +810,29 @@ namespace Talent.Services.Profile.Domain.Services
                             
 
                             var newUser = new TalentSnapshotViewModel();
-                            //newUser.CurrentEmployment = user.Experience.Last();
+
+
+                            if (user.Experience.Count > 0)
+                            {
+                                newUser.CurrentEmployment = user.Experience.LastOrDefault().Company;
+                                newUser.Level = user.Experience.LastOrDefault().Position;
+                                //newUser.CurrentEmployment = "Tesing";
+                            }
+
+                            //newUser.CurrentEmployment = user.Experience.Last().Company;
                             //newUser.Level = user.Experience.Select(x=> x.Position).LastOrDefault().ToString();
 
                             newUser.Name = user.FirstName+" "+user.LastName;
                             newUser.Visa = user.VisaStatus;
                             newUser.Skills = user.Skills.Select(x => x.Skill).ToList();
+
+                            if (user.LinkedAccounts != null)
+                            {
+                                newUser.linkedIn = user.LinkedAccounts.LinkedIn;
+                                newUser.github = user.LinkedAccounts.Github;
+                            }
+                           
+                            
 
                             result.Add(newUser);
 
@@ -825,12 +842,54 @@ namespace Talent.Services.Profile.Domain.Services
 
                 }
                 return null;
-          
-            
-
             //throw new NotImplementedException();
         }
 
+
+        //This one works fine(without links)
+        //public async Task<IEnumerable<TalentSnapshotViewModel>> GetTalentSnapshotList(string employerId, bool forJob, int position, int increment)
+        //{
+
+
+        //    //_userRepository.Collection;
+        //    if (employerId != null)
+        //    {
+
+        //        var list = _userRepository.Collection.Skip(increment * (position - 1)).Take(increment);
+
+        //        var result = new List<TalentSnapshotViewModel>();
+
+        //        foreach (var user in list)
+        //        {
+
+
+        //            var newUser = new TalentSnapshotViewModel();
+
+
+        //            if (user.Experience.Count > 0)
+        //            {
+        //                newUser.CurrentEmployment = user.Experience.LastOrDefault().Company;
+        //                newUser.Level = user.Experience.LastOrDefault().Position;
+        //                //newUser.CurrentEmployment = "Tesing";
+        //            }
+
+        //            //newUser.CurrentEmployment = user.Experience.Last().Company;
+        //            //newUser.Level = user.Experience.Select(x=> x.Position).LastOrDefault().ToString();
+
+        //            newUser.Name = user.FirstName + " " + user.LastName;
+        //            newUser.Visa = user.VisaStatus;
+        //            newUser.Skills = user.Skills.Select(x => x.Skill).ToList();
+
+        //            result.Add(newUser);
+
+        //        }
+
+        //        return result;
+
+        //    }
+        //    return null;
+        //    //throw new NotImplementedException();
+        //}
 
 
 

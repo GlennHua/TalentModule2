@@ -852,6 +852,14 @@ namespace Talent.Services.Profile.Controllers
                 //}
                 int length = result.Count();
 
+                //List<>
+
+                //if (length >= 0)
+                //{
+
+                //}
+
+
                 if (result != null)
                 {
                     return Json(new { Success = true, data = result, TheLength = length });
@@ -860,7 +868,7 @@ namespace Talent.Services.Profile.Controllers
             }
             catch (Exception e)
             {
-                return Json(new { Success = false, e.Message });
+                return Json(new { Success = false, Message = e.Message });
             }
         }
         #endregion
