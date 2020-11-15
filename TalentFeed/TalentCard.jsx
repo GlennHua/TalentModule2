@@ -131,6 +131,10 @@ export default class TalentCard extends React.Component {
                                 </Card.Description> */}
                                 <TalentCardDetail 
                                     visa = {talent.visa}
+                                    currentEmployment = {talent.currentEmployment}
+                                    level = {talent.level}
+                                    linkedIn = {talent.linkedIn}
+                                    github = {talent.github}
                                 />
 
                                 

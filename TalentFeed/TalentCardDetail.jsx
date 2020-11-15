@@ -22,6 +22,9 @@ export default class TalentCardDetail extends React.Component {
         this.goToDetails = this.goToDetails.bind(this)
         this.goToDefault = this.goToDefault.bind(this)
 
+        this.openLinkedIn = this.openLinkedIn.bind(this)
+        this.openGitHub = this.openGitHub.bind(this)
+
     }
     
 
@@ -40,6 +43,21 @@ export default class TalentCardDetail extends React.Component {
         })
     }
 
+    openLinkedIn(event)
+    {
+        const link = this.props.linkedIn
+
+        const open = window.open('about:blank')
+        open.location.href=link
+    }
+
+    openGitHub(event)
+    {
+        const link = this.props.github
+
+        const open = window.open('about:blank')
+        open.location.href=link
+    }
 
     renderDefaultView()
     {
@@ -60,11 +78,11 @@ export default class TalentCardDetail extends React.Component {
                     />
                     <Menu.Item 
                         icon = 'linkedin'
-                        onClick = {this.forTesting}
+                        onClick = {this.openLinkedIn}
                     />
                     <Menu.Item 
                         icon = 'github'
-                        onClick = {this.forTesting}
+                        onClick = {this.openGitHub}
                     />
                 </Menu>
 
@@ -90,7 +108,7 @@ export default class TalentCardDetail extends React.Component {
                         <h4>Talent Snapshot</h4>
                             <List>
                                 <List.Item>
-                                    <List.Header>Current Employer</List.Header>Unknown
+                                    <List.Header>Current Employer</List.Header>{this.props.currentEmployment ? <p>{this.props.currentEmployment}</p> : <p>Unknown</p>}
                                 </List.Item>
 
                                 <List.Item>
@@ -98,7 +116,7 @@ export default class TalentCardDetail extends React.Component {
                                 </List.Item>
                             
                                 <List.Item>
-                                    <List.Header>Position</List.Header>Unknown
+                                    <List.Header>Position</List.Header>{this.props.level ? <p>{this.props.level}</p> : <p>Unknown</p>}
                                 </List.Item>
 
                             </List>
@@ -113,15 +131,15 @@ export default class TalentCardDetail extends React.Component {
                     />
                     <Menu.Item 
                         icon = 'file pdf'
-                        onClick = {this.forTesting}
+                        //onClick = {this.forTesting}
                     />
                     <Menu.Item 
                         icon = 'linkedin'
-                        onClick = {this.forTesting}
+                        onClick = {this.openLinkedIn}
                     />
                     <Menu.Item 
                         icon = 'github'
-                        onClick = {this.forTesting}
+                        onClick = {this.openGitHub}
                     />
                 </Menu>
 
